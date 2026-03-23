@@ -50,6 +50,7 @@ const messages = defineMessages('components.RequestModal', {
   autoapproval: 'Automatic Approval',
   requesterror: 'Something went wrong while submitting the request.',
   pendingapproval: 'Your request is pending approval.',
+  oneseasonlimit: 'You can only request one season at a time.',
 });
 
 interface RequestModalProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -171,7 +172,7 @@ const TvRequestModal = ({
 
   const sendRequest = async () => {
     if (
-      settings.currentSettings.partialRequestsEnabled &&
+      (settings.currentSettings.partialRequestsEnabled || isOneSeasonLimited) &&
       selectedSeasons.length === 0
     ) {
       return;
@@ -200,11 +201,13 @@ const TvRequestModal = ({
         mediaType: 'tv',
         is4k,
         ignoreQuota: requestOverrides?.ignoreQuota,
-        seasons: settings.currentSettings.partialRequestsEnabled
-          ? selectedSeasons.sort((a, b) => a - b)
-          : getAllSeasons().filter(
-              (season) => !getAllRequestedSeasons().includes(season)
-            ),
+        seasons:
+          settings.currentSettings.partialRequestsEnabled || isOneSeasonLimited
+            ? selectedSeasons.sort((a, b) => a - b)
+            : getAllSeasons().filter(
+                (season) =>
+                  !getAllRequestedSeasons().includes(season) && season !== 0
+              ),
         ...overrideParams,
       });
       mutate('/api/v1/request?filter=all&take=10&sort=modified&skip=0');
@@ -279,6 +282,12 @@ const TvRequestModal = ({
   const isSelectedSeason = (seasonNumber: number): boolean =>
     selectedSeasons.includes(seasonNumber);
 
+  const isOneSeasonLimited =
+    hasPermission(Permission.LIMIT_ONE_SEASON) &&
+    !hasPermission([Permission.MANAGE_REQUESTS, Permission.ADMIN], {
+      type: 'or',
+    });
+
   const toggleSeason = (seasonNumber: number): void => {
     // If this season already has a pending request, don't allow it to be toggled
     if (getAllRequestedSeasons().includes(seasonNumber)) {
@@ -298,6 +307,9 @@ const TvRequestModal = ({
       setSelectedSeasons((seasons) =>
         seasons.filter((sn) => sn !== seasonNumber)
       );
+    } else if (isOneSeasonLimited) {
+      // Single-season mode: replace selection instead of adding
+      setSelectedSeasons([seasonNumber]);
     } else {
       setSelectedSeasons((seasons) => [...seasons, seasonNumber]);
     }
@@ -420,7 +432,8 @@ const TvRequestModal = ({
               : intl.formatMessage(messages.edit)
           : getAllRequestedSeasons().length >= getAllSeasons().length
             ? intl.formatMessage(messages.alreadyrequested)
-            : !settings.currentSettings.partialRequestsEnabled
+            : !settings.currentSettings.partialRequestsEnabled &&
+                !isOneSeasonLimited
               ? intl.formatMessage(
                   is4k ? globalMessages.request4k : globalMessages.request
                 )
@@ -437,12 +450,14 @@ const TvRequestModal = ({
         editRequest
           ? false
           : !settings.currentSettings.partialRequestsEnabled &&
+              !isOneSeasonLimited &&
               quota?.tv.limit &&
               unrequestedSeasons.length > quota.tv.limit &&
               !requestOverrides?.ignoreQuota
             ? true
             : getAllRequestedSeasons().length >= getAllSeasons().length ||
-              (settings.currentSettings.partialRequestsEnabled &&
+              ((settings.currentSettings.partialRequestsEnabled ||
+                isOneSeasonLimited) &&
                 selectedSeasons.length === 0)
       }
       okButtonType={
@@ -493,6 +508,14 @@ const TvRequestModal = ({
             />
           </p>
         )}
+      {isOneSeasonLimited && !editRequest && (
+        <p className="mt-6">
+          <Alert
+            title={intl.formatMessage(messages.oneseasonlimit)}
+            type="warning"
+          />
+        </p>
+      )}
       {(quota?.tv.limit ?? 0) > 0 && (
         <QuotaDisplay
           mediaType="tv"
@@ -525,7 +548,8 @@ const TvRequestModal = ({
                   <tr>
                     <th
                       className={`w-16 bg-gray-700/80 px-4 py-3 ${
-                        !settings.currentSettings.partialRequestsEnabled &&
+                        (!settings.currentSettings.partialRequestsEnabled ||
+                          isOneSeasonLimited) &&
                         'hidden'
                       }`}
                     >
@@ -597,7 +621,9 @@ const TvRequestModal = ({
                           <td
                             className={`whitespace-nowrap px-4 py-4 text-sm font-medium leading-5 text-gray-100 ${
                               !settings.currentSettings
-                                .partialRequestsEnabled && 'hidden'
+                                .partialRequestsEnabled &&
+                              !isOneSeasonLimited &&
+                              'hidden'
                             }`}
                           >
                             <span
