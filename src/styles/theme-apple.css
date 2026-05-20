@@ -9,12 +9,11 @@
    continuous, generous corner radii.
 
    The app is built on hard-coded Tailwind utilities, so this is
-   an override layer: every rule is scoped under `html.theme-apple`
-   (specificity 0,2,0+) so it wins over the base utility classes
-   without touching component markup.
+   an override layer: rules are scoped under `html.theme-apple`
+   (specificity 0,2,0+) so they win over the base utility classes.
    ============================================================= */
 
-/* ---------- Design tokens (light) ---------- */
+/* ===================== Design tokens ===================== */
 html.theme-apple {
   --ap-font:
     -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display',
@@ -26,13 +25,13 @@ html.theme-apple {
   --ap-surface: #ffffff;
   --ap-surface-2: #ffffff;
   --ap-surface-3: #ececf0;
-  --ap-surface-4: #e1e1e6;
+  --ap-surface-4: #e3e3e8;
   --ap-hover: #ededf0;
 
   /* Labels */
   --ap-label: #1d1d1f;
   --ap-label-2: #6e6e73;
-  --ap-label-3: #8e8e93;
+  --ap-label-3: #86868b;
 
   /* Separators */
   --ap-separator: rgba(0, 0, 0, 0.1);
@@ -43,10 +42,24 @@ html.theme-apple {
   --ap-accent-hover: #0077ed;
   --ap-accent-2: #5e5ce6; /* system indigo, for gradients */
   --ap-accent-soft: rgba(0, 113, 227, 0.12);
+  --ap-on-accent: #ffffff;
   --ap-ring: rgba(0, 113, 227, 0.4);
+
+  /* Functional colors — tuned for contrast on light surfaces */
+  --ap-red: #d70015;
+  --ap-green: #1d7a36;
+  --ap-orange: #b25000;
+  --ap-warn-soft: rgba(255, 149, 0, 0.14);
+  --ap-warn-border: rgba(178, 80, 0, 0.4);
+  --ap-info-soft: rgba(0, 113, 227, 0.1);
+  --ap-error-solid: #d70015;
 
   /* Vibrancy (translucent chrome) */
   --ap-vibrancy: rgba(255, 255, 255, 0.72);
+
+  /* Scrims (over media artwork) */
+  --ap-scrim: rgba(0, 0, 0, 0.45);
+  --ap-scrim-soft: rgba(0, 0, 0, 0.28);
 
   /* Elevation */
   --ap-shadow-card:
@@ -61,10 +74,10 @@ html.theme-apple {
   --ap-r-2xl: 24px;
 
   color-scheme: light;
+  accent-color: var(--ap-accent);
   background-color: var(--ap-bg);
 }
 
-/* ---------- Design tokens (dark) ---------- */
 @media (prefers-color-scheme: dark) {
   html.theme-apple {
     --ap-bg: #000000;
@@ -88,6 +101,14 @@ html.theme-apple {
     --ap-accent-soft: rgba(10, 132, 255, 0.18);
     --ap-ring: rgba(10, 132, 255, 0.55);
 
+    --ap-red: #ff453a;
+    --ap-green: #30d158;
+    --ap-orange: #ff9f0a;
+    --ap-warn-soft: rgba(255, 159, 10, 0.16);
+    --ap-warn-border: rgba(255, 159, 10, 0.45);
+    --ap-info-soft: rgba(10, 132, 255, 0.16);
+    --ap-error-solid: #ff453a;
+
     --ap-vibrancy: rgba(28, 28, 30, 0.72);
 
     --ap-shadow-card:
@@ -98,12 +119,11 @@ html.theme-apple {
   }
 }
 
-/* ---------- Base ---------- */
+/* ===================== Base ===================== */
 html.theme-apple,
 html.theme-apple body {
   background-color: var(--ap-bg);
 }
-
 html.theme-apple,
 html.theme-apple body,
 html.theme-apple input,
@@ -114,7 +134,6 @@ html.theme-apple button {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
 html.theme-apple h1,
 html.theme-apple h2,
 html.theme-apple h3,
@@ -122,6 +141,10 @@ html.theme-apple .heading,
 html.theme-apple .slider-title,
 html.theme-apple .media-title > h1 {
   letter-spacing: -0.021em;
+}
+html.theme-apple ::placeholder {
+  color: var(--ap-label-3);
+  opacity: 1;
 }
 
 /* Scrollbars */
@@ -138,7 +161,7 @@ html.theme-apple ::-webkit-scrollbar-thumb {
   border-radius: 8px;
 }
 
-/* ---------- Surfaces ---------- */
+/* ===================== Surfaces ===================== */
 html.theme-apple .bg-gray-900 {
   background-color: var(--ap-bg);
 }
@@ -155,31 +178,19 @@ html.theme-apple .bg-gray-600 {
 html.theme-apple .bg-gray-500,
 html.theme-apple .bg-gray-400,
 html.theme-apple .bg-gray-300,
-html.theme-apple .bg-gray-200 {
+html.theme-apple .bg-gray-200,
+html.theme-apple .bg-gray-100,
+html.theme-apple .bg-gray-50 {
   background-color: var(--ap-surface-4);
 }
 
-/* Modal / dialog scrim — stays a dark wash in both appearances */
-html.theme-apple .bg-gray-800\/70,
-html.theme-apple .bg-gray-800\/50,
-html.theme-apple .bg-gray-900\/70,
-html.theme-apple .bg-gray-900\/80,
-html.theme-apple .bg-gray-900\/50 {
-  background-color: rgba(0, 0, 0, 0.45);
-}
-
-/* Translucent vibrancy chrome (scrolled header bar) */
-html.theme-apple .bg-gray-700\/80,
-html.theme-apple .bg-gray-700\/50 {
-  background-color: var(--ap-vibrancy);
-  -webkit-backdrop-filter: saturate(180%) blur(20px);
-  backdrop-filter: saturate(180%) blur(20px);
-}
-
-/* Hover fills */
+/* Hover / focus / active fills */
 html.theme-apple .hover\:bg-gray-800:hover,
 html.theme-apple .hover\:bg-gray-700:hover,
 html.theme-apple .hover\:bg-gray-600:hover,
+html.theme-apple .hover\:bg-gray-300:hover,
+html.theme-apple .focus\:bg-gray-700:focus,
+html.theme-apple .focus\:bg-gray-600:focus,
 html.theme-apple .group:hover .group-hover\:bg-gray-700 {
   background-color: var(--ap-hover);
 }
@@ -187,7 +198,29 @@ html.theme-apple .hover\:bg-gray-500:hover {
   background-color: var(--ap-surface-3);
 }
 
-/* ---------- Text ---------- */
+/* ===================== Scrims (over media artwork) =====================
+   Dark washes that keep light content readable in both appearances. */
+html.theme-apple .bg-gray-800\/75,
+html.theme-apple .bg-gray-800\/70,
+html.theme-apple .bg-gray-800\/50,
+html.theme-apple .bg-gray-900\/80,
+html.theme-apple .bg-gray-900\/70,
+html.theme-apple .bg-gray-900\/50 {
+  background-color: var(--ap-scrim);
+}
+html.theme-apple .bg-gray-800\/30,
+html.theme-apple .bg-black\/30,
+html.theme-apple .bg-gray-900\/30 {
+  background-color: var(--ap-scrim-soft);
+}
+html.theme-apple .bg-gray-800\/75 .text-white,
+html.theme-apple .bg-gray-800\/70 .text-white,
+html.theme-apple .bg-gray-900\/80 .text-white,
+html.theme-apple .bg-gray-900\/70 .text-white {
+  color: #fff;
+}
+
+/* ===================== Text ===================== */
 html.theme-apple .text-white,
 html.theme-apple .text-gray-50,
 html.theme-apple .text-gray-100,
@@ -199,16 +232,21 @@ html.theme-apple .text-gray-400 {
   color: var(--ap-label-2);
 }
 html.theme-apple .text-gray-500,
-html.theme-apple .text-gray-600 {
+html.theme-apple .text-gray-600,
+html.theme-apple .text-gray-700,
+html.theme-apple .text-gray-800 {
   color: var(--ap-label-3);
 }
 html.theme-apple .hover\:text-white:hover,
 html.theme-apple .hover\:text-gray-100:hover,
+html.theme-apple .hover\:text-gray-200:hover,
+html.theme-apple .hover\:text-gray-300:hover,
+html.theme-apple .focus\:text-white:focus,
 html.theme-apple .group:hover .group-hover\:text-white {
   color: var(--ap-label);
 }
 
-/* ---------- Borders & dividers ---------- */
+/* ===================== Borders, rings & dividers ===================== */
 html.theme-apple .border-gray-800,
 html.theme-apple .border-gray-700,
 html.theme-apple .border-gray-600,
@@ -216,58 +254,110 @@ html.theme-apple .border-gray-500,
 html.theme-apple .border-gray-400,
 html.theme-apple .border-gray-300,
 html.theme-apple .border-gray-200,
-html.theme-apple .border-gray-100 {
+html.theme-apple .border-gray-100,
+html.theme-apple .border-white,
+html.theme-apple .hover\:border-gray-200:hover,
+html.theme-apple .hover\:border-gray-400:hover,
+html.theme-apple .hover\:border-gray-500:hover,
+html.theme-apple .hover\:border-gray-600:hover,
+html.theme-apple .focus\:border-gray-100:focus,
+html.theme-apple .focus\:border-gray-500:focus,
+html.theme-apple .active\:border-gray-100:active,
+html.theme-apple .group:hover .group-hover\:border-gray-600 {
   border-color: var(--ap-separator);
 }
+html.theme-apple .ring-gray-800,
 html.theme-apple .ring-gray-700,
-html.theme-apple .ring-gray-800 {
+html.theme-apple .ring-gray-600,
+html.theme-apple .ring-gray-500,
+html.theme-apple .ring-black,
+html.theme-apple .ring-white,
+html.theme-apple .hover\:ring-gray-500:hover {
   --tw-ring-color: var(--ap-separator);
 }
+html.theme-apple .divide-gray-800 > :not([hidden]) ~ :not([hidden]),
 html.theme-apple .divide-gray-700 > :not([hidden]) ~ :not([hidden]),
-html.theme-apple .divide-gray-800 > :not([hidden]) ~ :not([hidden]) {
+html.theme-apple .divide-gray-600 > :not([hidden]) ~ :not([hidden]) {
   border-color: var(--ap-separator);
 }
 
-/* ---------- Accent (indigo / purple → Apple blue) ---------- */
+/* ===================== Accent (indigo / purple / blue → Apple blue) ===================== */
 html.theme-apple .bg-indigo-700,
 html.theme-apple .bg-indigo-600,
 html.theme-apple .bg-indigo-600\/80,
 html.theme-apple .bg-indigo-500,
 html.theme-apple .bg-indigo-500\/80,
 html.theme-apple .bg-indigo-400,
-html.theme-apple .bg-purple-600 {
+html.theme-apple .bg-purple-600,
+html.theme-apple .bg-purple-600\/80,
+html.theme-apple .bg-blue-600\/80 {
   background-color: var(--ap-accent);
-  color: #fff;
+  color: var(--ap-on-accent);
 }
+html.theme-apple .bg-indigo-400\/20,
+html.theme-apple .bg-indigo-500\/20 {
+  background-color: var(--ap-accent-soft);
+}
+html.theme-apple .hover\:bg-indigo-700:hover,
 html.theme-apple .hover\:bg-indigo-600:hover,
-html.theme-apple .hover\:bg-indigo-500:hover {
+html.theme-apple .hover\:bg-indigo-500:hover,
+html.theme-apple .active\:bg-indigo-700:active,
+html.theme-apple .active\:bg-indigo-600:active {
   background-color: var(--ap-accent-hover);
 }
 html.theme-apple .text-indigo-600,
 html.theme-apple .text-indigo-500,
-html.theme-apple .text-indigo-400 {
+html.theme-apple .text-indigo-400,
+html.theme-apple .hover\:text-indigo-400:hover {
   color: var(--ap-accent);
 }
 html.theme-apple .border-indigo-700,
 html.theme-apple .border-indigo-600,
 html.theme-apple .border-indigo-500,
-html.theme-apple .border-indigo-400 {
+html.theme-apple .border-indigo-400,
+html.theme-apple .border-blue-300,
+html.theme-apple .border-blue-500,
+html.theme-apple .hover\:border-indigo-500:hover,
+html.theme-apple .focus\:border-indigo-700:focus,
+html.theme-apple .focus\:border-blue-300:focus,
+html.theme-apple .active\:border-indigo-700:active {
   border-color: var(--ap-accent);
 }
 html.theme-apple .ring-indigo-500,
-html.theme-apple .focus\:ring-indigo:focus {
+html.theme-apple .ring-indigo-400,
+html.theme-apple .ring-indigo-300,
+html.theme-apple .ring-indigo,
+html.theme-apple .ring-blue,
+html.theme-apple .focus\:ring-indigo:focus,
+html.theme-apple .focus\:ring-indigo-500:focus,
+html.theme-apple .focus\:ring-blue:focus {
   --tw-ring-color: var(--ap-ring);
 }
+/* Keep label text legible on accent backgrounds */
+html.theme-apple .bg-indigo-700 .text-white,
+html.theme-apple .bg-indigo-600 .text-white,
+html.theme-apple .bg-indigo-600\/80 .text-white,
+html.theme-apple .bg-indigo-500 .text-white,
+html.theme-apple .bg-purple-600 .text-white {
+  color: var(--ap-on-accent);
+}
 
-/* Gradients — retire the indigo→purple wash for a calm blue→indigo */
+/* ===================== Gradients =====================
+   Retire the indigo→purple wash for a calm blue→indigo;
+   keep label text white on the accent gradient. */
 html.theme-apple [class*='from-indigo'] {
   --tw-gradient-from: var(--ap-accent) !important;
   --tw-gradient-stops:
     var(--tw-gradient-from), var(--tw-gradient-to) !important;
+  color: var(--ap-on-accent);
 }
 html.theme-apple [class*='to-purple'],
 html.theme-apple [class*='to-indigo'] {
   --tw-gradient-to: var(--ap-accent-2) !important;
+}
+html.theme-apple [class*='from-indigo'] .text-white,
+html.theme-apple [class*='from-indigo'] .text-gray-300 {
+  color: var(--ap-on-accent);
 }
 html.theme-apple .text-overseerr {
   background-image: linear-gradient(
@@ -277,7 +367,33 @@ html.theme-apple .text-overseerr {
   );
 }
 
-/* ---------- Continuous corner radii ---------- */
+/* ===================== Functional / status colors ===================== */
+html.theme-apple .text-red-500,
+html.theme-apple .text-red-400,
+html.theme-apple .text-red-600,
+html.theme-apple .error,
+html.theme-apple .label-required {
+  color: var(--ap-red);
+}
+html.theme-apple .text-green-500,
+html.theme-apple .text-green-400 {
+  color: var(--ap-green);
+}
+html.theme-apple .text-yellow-500,
+html.theme-apple .text-yellow-300,
+html.theme-apple .text-amber-300,
+html.theme-apple .text-orange-400,
+html.theme-apple .warning {
+  color: var(--ap-orange);
+}
+html.theme-apple .service-error-banner {
+  background-color: var(--ap-warn-soft);
+  border-color: var(--ap-warn-border);
+  color: var(--ap-orange);
+  border-radius: var(--ap-r-md);
+}
+
+/* ===================== Continuous corner radii ===================== */
 html.theme-apple .rounded,
 html.theme-apple .rounded-sm {
   border-radius: var(--ap-r-sm);
@@ -297,7 +413,7 @@ html.theme-apple .rounded-2xl {
   border-radius: var(--ap-r-2xl);
 }
 
-/* ---------- Elevation ---------- */
+/* ===================== Elevation ===================== */
 html.theme-apple .shadow,
 html.theme-apple .shadow-sm,
 html.theme-apple .shadow-md,
@@ -309,7 +425,7 @@ html.theme-apple .shadow-2xl {
   box-shadow: var(--ap-shadow-pop);
 }
 
-/* ---------- Sidebar (vibrancy) ---------- */
+/* ===================== Sidebar (vibrancy) ===================== */
 html.theme-apple .sidebar {
   background: var(--ap-vibrancy);
   -webkit-backdrop-filter: saturate(180%) blur(30px);
@@ -317,12 +433,21 @@ html.theme-apple .sidebar {
   border-right: 0.5px solid var(--ap-separator);
 }
 
-/* ---------- Forms ---------- */
+/* Translucent vibrancy chrome (scrolled header bar) */
+html.theme-apple .bg-gray-700\/80,
+html.theme-apple .bg-gray-700\/50 {
+  background-color: var(--ap-vibrancy);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+}
+
+/* ===================== Forms ===================== */
 html.theme-apple input[type='text'],
 html.theme-apple input[type='password'],
 html.theme-apple input[type='email'],
 html.theme-apple input[type='number'],
 html.theme-apple input[type='search'],
+html.theme-apple input[type='tel'],
 html.theme-apple input[type='url'],
 html.theme-apple select,
 html.theme-apple textarea {
@@ -336,6 +461,7 @@ html.theme-apple input[type='password']:focus,
 html.theme-apple input[type='email']:focus,
 html.theme-apple input[type='number']:focus,
 html.theme-apple input[type='search']:focus,
+html.theme-apple input[type='tel']:focus,
 html.theme-apple input[type='url']:focus,
 html.theme-apple select:focus,
 html.theme-apple textarea:focus {
@@ -356,6 +482,9 @@ html.theme-apple label,
 html.theme-apple .group-label {
   color: var(--ap-label-2);
 }
+html.theme-apple .label-tip {
+  color: var(--ap-label-3);
+}
 html.theme-apple .protocol {
   background-color: var(--ap-surface-3);
   color: var(--ap-label-2);
@@ -364,6 +493,7 @@ html.theme-apple .protocol {
 html.theme-apple button.input-action {
   background-color: var(--ap-accent);
   border-color: var(--ap-accent);
+  color: var(--ap-on-accent);
 }
 html.theme-apple button.input-action:not([disabled]):hover {
   background-color: var(--ap-accent-hover);
@@ -372,6 +502,7 @@ html.theme-apple .server-type-button {
   background-color: var(--ap-surface-2);
   border-color: var(--ap-separator-strong);
   border-radius: var(--ap-r-md);
+  color: var(--ap-label);
 }
 html.theme-apple .server-type-button:hover {
   background-color: var(--ap-hover);
@@ -383,7 +514,12 @@ html.theme-apple .react-select-container .react-select__control {
   border-color: var(--ap-separator-strong);
   border-radius: var(--ap-r-md);
 }
-html.theme-apple .react-select-container .react-select__menu {
+html.theme-apple .react-select-container-dark .react-select__control {
+  background-color: var(--ap-surface);
+  border-color: var(--ap-separator);
+}
+html.theme-apple .react-select-container .react-select__menu,
+html.theme-apple .react-select-container-dark .react-select__menu {
   background-color: var(--ap-bg-elevated);
   border: 0.5px solid var(--ap-separator);
   border-radius: var(--ap-r-md);
@@ -395,20 +531,23 @@ html.theme-apple .react-select-container .react-select__option--is-focused {
   color: var(--ap-label);
 }
 html.theme-apple .react-select-container .react-select__single-value,
-html.theme-apple .react-select-container .react-select__input-container {
+html.theme-apple .react-select-container .react-select__input-container,
+html.theme-apple .react-select-container .react-select__multi-value__label {
   color: var(--ap-label);
 }
 html.theme-apple .react-select-container .react-select__multi-value {
   background-color: var(--ap-surface-3);
   border-color: var(--ap-separator);
 }
+html.theme-apple .react-select-container .react-select__placeholder {
+  color: var(--ap-label-3);
+}
 
-/* ---------- Semantic component classes ---------- */
+/* ===================== Semantic component classes ===================== */
 html.theme-apple .heading {
   color: var(--ap-label);
 }
-html.theme-apple .description,
-html.theme-apple .label-tip {
+html.theme-apple .description {
   color: var(--ap-label-2);
 }
 html.theme-apple code {
@@ -431,8 +570,42 @@ html.theme-apple .media-fact,
 html.theme-apple .media-ratings {
   border-color: var(--ap-separator);
 }
+html.theme-apple .card-field-name {
+  color: var(--ap-label-2);
+}
 
-/* ---------- Media detail pages ----------
+/* ===================== Alert component ===================== */
+html.theme-apple .alert {
+  border-radius: var(--ap-r-md);
+}
+html.theme-apple .alert-warning {
+  background-color: var(--ap-warn-soft);
+  border-color: var(--ap-warn-border);
+}
+html.theme-apple .alert-warning .text-yellow-100,
+html.theme-apple .alert-warning .text-yellow-300 {
+  color: var(--ap-orange);
+}
+html.theme-apple .alert-info {
+  background-color: var(--ap-info-soft);
+  border-color: var(--ap-accent);
+}
+html.theme-apple .alert-error {
+  background-color: var(--ap-error-solid);
+}
+html.theme-apple .alert-error .text-red-100,
+html.theme-apple .alert-error .text-red-300 {
+  color: #fff;
+}
+
+/* ===================== TitleCard hover overlay ===================== */
+html.theme-apple .titlecard-overlay .text-white,
+html.theme-apple .titlecard-overlay .text-gray-300,
+html.theme-apple .titlecard-overlay .text-gray-400 {
+  color: #fff;
+}
+
+/* ===================== Media detail pages =====================
    Apple keeps media headers immersive (cf. the TV & Music apps),
    so the backdrop fades into the active appearance's background
    while the title stays light over the darkened artwork. */
@@ -453,7 +626,7 @@ html.theme-apple .media-attributes a {
   color: rgba(255, 255, 255, 0.85) !important;
 }
 
-/* ---------- Focus ring ---------- */
+/* ===================== Focus ring ===================== */
 html.theme-apple a:focus-visible,
 html.theme-apple button:focus-visible {
   outline: 2px solid var(--ap-accent);
