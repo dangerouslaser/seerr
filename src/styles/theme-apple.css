@@ -20,13 +20,17 @@ html.theme-apple {
     'Helvetica Neue', 'Inter Variable', system-ui, sans-serif;
 
   /* Surfaces — iOS systemGroupedBackground family */
-  --ap-bg: #f5f5f7;
+  --ap-bg: #e8e8ed;
   --ap-bg-elevated: #ffffff;
   --ap-surface: #ffffff;
   --ap-surface-2: #ffffff;
-  --ap-surface-3: #ececf0;
-  --ap-surface-4: #e3e3e8;
+  --ap-surface-3: #dcdce1;
+  --ap-surface-4: #cfcfd6;
   --ap-hover: #ededf0;
+
+  /* Logo plate — neutral grey behind predominantly white logos */
+  --ap-logo-surface: #6e6e73;
+  --ap-logo-surface-hover: #828289;
 
   /* Labels */
   --ap-label: #1d1d1f;
@@ -87,6 +91,9 @@ html.theme-apple {
     --ap-surface-3: #3a3a3c;
     --ap-surface-4: #48484a;
     --ap-hover: #2c2c2e;
+
+    --ap-logo-surface: #3a3a3c;
+    --ap-logo-surface-hover: #48484a;
 
     --ap-label: #f5f5f7;
     --ap-label-2: #aeaeb2;
@@ -624,6 +631,29 @@ html.theme-apple .media-header .media-title > h1 {
 html.theme-apple .media-attributes,
 html.theme-apple .media-attributes a {
   color: rgba(255, 255, 255, 0.85) !important;
+}
+
+/* ===================== Logo plates (studios / networks) =====================
+   Company logos are predominantly white, so their cards keep a neutral
+   grey plate in both appearances rather than the standard light surface. */
+html.theme-apple .company-card {
+  background-color: var(--ap-logo-surface);
+}
+html.theme-apple .company-card:hover {
+  background-color: var(--ap-logo-surface-hover);
+}
+html.theme-apple .company-card .bg-gradient-to-t {
+  background-image: none;
+}
+
+/* Genre cards always sit on artwork — keep their label white */
+html.theme-apple .genre-card .text-white {
+  color: #fff;
+}
+
+/* Hide the route-change progress bar in the Apple theme */
+html.theme-apple .loading-bar {
+  display: none;
 }
 
 /* ===================== Focus ring ===================== */
