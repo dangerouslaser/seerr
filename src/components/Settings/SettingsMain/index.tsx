@@ -71,6 +71,10 @@ const messages = defineMessages('components.Settings.SettingsMain', {
   partialRequestsEnabled: 'Allow Partial Series Requests',
   enableSpecialEpisodes: 'Allow Special Episodes Requests',
   locale: 'Display Language',
+  theme: 'Theme',
+  themeTip: 'Visual appearance applied across the app for all users',
+  themeStandard: 'Standard',
+  themeApple: 'Apple — macOS / iOS',
   youtubeUrl: 'YouTube URL',
   youtubeUrlTip:
     'Base URL for YouTube videos if a self-hosted YouTube instance is used.',
@@ -172,6 +176,7 @@ const SettingsMain = () => {
             hideAvailable: data?.hideAvailable,
             hideBlocklisted: data?.hideBlocklisted,
             locale: data?.locale ?? 'en',
+            theme: data?.theme ?? 'standard',
             discoverRegion: data?.discoverRegion,
             originalLanguage: data?.originalLanguage,
             streamingRegion: data?.streamingRegion || 'US',
@@ -194,6 +199,7 @@ const SettingsMain = () => {
                 hideAvailable: values.hideAvailable,
                 hideBlocklisted: values.hideBlocklisted,
                 locale: values.locale,
+                theme: values.theme,
                 discoverRegion: values.discoverRegion,
                 streamingRegion: values.streamingRegion,
                 originalLanguage: values.originalLanguage,
@@ -356,6 +362,26 @@ const SettingsMain = () => {
                             {availableLanguages[key].display}
                           </option>
                         ))}
+                      </Field>
+                    </div>
+                  </div>
+                </div>
+                <div className="form-row">
+                  <label htmlFor="theme" className="text-label">
+                    <span>{intl.formatMessage(messages.theme)}</span>
+                    <span className="label-tip">
+                      {intl.formatMessage(messages.themeTip)}
+                    </span>
+                  </label>
+                  <div className="form-input-area">
+                    <div className="form-input-field">
+                      <Field as="select" id="theme" name="theme">
+                        <option value="standard">
+                          {intl.formatMessage(messages.themeStandard)}
+                        </option>
+                        <option value="apple">
+                          {intl.formatMessage(messages.themeApple)}
+                        </option>
                       </Field>
                     </div>
                   </div>

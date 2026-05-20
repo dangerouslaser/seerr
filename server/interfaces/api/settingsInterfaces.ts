@@ -41,6 +41,7 @@ export interface PublicSettingsResponse {
   mediaServerType: number;
   partialRequestsEnabled: boolean;
   enableSpecialEpisodes: boolean;
+  theme: string;
   cacheImages: boolean;
   vapidPublic: string;
   enablePushRegistration: boolean;

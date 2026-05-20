@@ -3,6 +3,7 @@ import LoadingBar from '@app/components/LoadingBar';
 import PWAHeader from '@app/components/PWAHeader';
 import ServiceWorkerSetup from '@app/components/ServiceWorkerSetup';
 import StatusChecker from '@app/components/StatusChecker';
+import ThemeManager from '@app/components/ThemeManager';
 import { InteractionProvider } from '@app/context/InteractionContext';
 import { LanguageContext } from '@app/context/LanguageContext';
 import { SettingsProvider } from '@app/context/SettingsContext';
@@ -10,6 +11,7 @@ import { UserContext } from '@app/context/UserContext';
 import type { User } from '@app/hooks/useUser';
 import { Permission, useUser } from '@app/hooks/useUser';
 import '@app/styles/globals.css';
+import '@app/styles/theme-apple.css';
 import { polyfillIntl } from '@app/utils/polyfillIntl';
 import '@fontsource-variable/inter';
 import { MediaServerType } from '@server/constants/server';
@@ -216,6 +218,7 @@ const CoreApp: Omit<NextAppComponentType, 'origGetInitialProps'> = ({
                 />
               </Head>
               <StatusChecker />
+              <ThemeManager />
               <ServiceWorkerSetup />
               <UserContext initialUser={user}>{component}</UserContext>
               <Toaster
@@ -253,6 +256,7 @@ CoreApp.getInitialProps = async (initialProps) => {
     mediaServerType: MediaServerType.NOT_CONFIGURED,
     partialRequestsEnabled: true,
     enableSpecialEpisodes: false,
+    theme: 'standard',
     cacheImages: false,
     vapidPublic: '',
     enablePushRegistration: false,
