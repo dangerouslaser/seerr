@@ -38,7 +38,11 @@ const Alert = ({ title, children, type }: AlertProps) => {
   }
 
   return (
-    <div className={`mb-4 rounded-md p-4 ${design.bgColor}`}>
+    <div
+      className={`alert alert-${type ?? 'warning'} mb-4 rounded-md p-4 ${
+        design.bgColor
+      }`}
+    >
       <div className="flex">
         <div className={`flex-shrink-0 ${design.titleColor}`}>{design.svg}</div>
         <div className="ml-3">
