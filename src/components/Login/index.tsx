@@ -155,7 +155,7 @@ const Login = () => {
   ].filter((o): o is JSX.Element => !!o);
 
   return (
-    <div className="relative flex min-h-screen flex-col bg-gray-900 py-14">
+    <div className="relative flex min-h-screen flex-col justify-center bg-gray-900 py-14">
       <PageTitle title={intl.formatMessage(messages.signin)} />
       <ImageFader
         backgroundImages={
@@ -167,7 +167,7 @@ const Login = () => {
       <div className="absolute right-4 top-4 z-50">
         <LanguagePicker />
       </div>
-      <div className="relative z-50 mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+      <div className="relative z-50 sm:mx-auto sm:w-full sm:max-w-md">
         <div
           className="bg-gray-800/50 shadow sm:rounded-lg"
           style={{ backdropFilter: 'blur(5px)' }}
@@ -242,11 +242,7 @@ const Login = () => {
                     </span>
                     <div className="flex-grow border-t border-gray-600" />
                   </div>
-                ) : (
-                  <h2 className="mb-6 text-center text-lg font-bold text-neutral-200">
-                    {intl.formatMessage(messages.signinheader)}
-                  </h2>
-                ))}
+                ) : null)}
 
               <div
                 className={`flex w-full flex-wrap gap-2 ${
