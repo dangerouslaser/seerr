@@ -11,7 +11,7 @@ import axios from 'axios';
 import { Field, Formik, useFormikContext, type FieldAttributes } from 'formik';
 import { useEffect } from 'react';
 import { useIntl } from 'react-intl';
-import { useToasts } from 'react-toast-notifications';
+import useToasts from '@app/hooks/useToasts';
 import { twMerge } from 'tailwind-merge';
 import * as Yup from 'yup';
 

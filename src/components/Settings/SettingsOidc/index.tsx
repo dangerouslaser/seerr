@@ -11,7 +11,7 @@ import type { OidcProvider, OidcSettings } from '@server/lib/settings';
 import axios from 'axios';
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
-import { useToasts } from 'react-toast-notifications';
+import useToasts from '@app/hooks/useToasts';
 import useSWR from 'swr';
 
 const messages = defineMessages('components.Settings.SettingsOidc', {
