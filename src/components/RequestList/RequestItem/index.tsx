@@ -15,6 +15,7 @@ import {
   ArrowPathIcon,
   CheckIcon,
   PencilIcon,
+  ServerIcon,
   TrashIcon,
   XMarkIcon,
 } from '@heroicons/react/24/solid';
@@ -46,7 +47,7 @@ const messages = defineMessages('components.RequestList.RequestItem', {
   tmdbid: 'TMDB ID',
   tvdbid: 'TheTVDB ID',
   unknowntitle: 'Unknown Title',
-  removearr: 'Remove from {arr}',
+  openarr: 'Open in {arr}',
   profileName: 'Profile',
 });
 
@@ -349,16 +350,6 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
 
     revalidateList();
     mutate('/api/v1/request/count');
-  };
-
-  const deleteMediaFile = async () => {
-    if (request.media) {
-      await axios.delete(
-        `/api/v1/media/${request.media.id}/file?is4k=${request.is4k}`
-      );
-      await axios.delete(`/api/v1/media/${request.media.id}`);
-      revalidateList();
-    }
   };
 
   const retryRequest = async () => {
@@ -702,19 +693,28 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
                   <TrashIcon />
                   <span>{intl.formatMessage(messages.deleterequest)}</span>
                 </ConfirmButton>
-                {request.canRemove && (
-                  <ConfirmButton
-                    onClick={() => deleteMediaFile()}
-                    confirmText={intl.formatMessage(globalMessages.areyousure)}
-                    className="w-full"
+                {(request.is4k
+                  ? requestData.media.serviceUrl4k
+                  : requestData.media.serviceUrl) && (
+                  <a
+                    href={
+                      request.is4k
+                        ? requestData.media.serviceUrl4k
+                        : requestData.media.serviceUrl
+                    }
+                    target="_blank"
+                    rel="noreferrer"
+                    className="block w-full"
                   >
-                    <TrashIcon />
-                    <span>
-                      {intl.formatMessage(messages.removearr, {
-                        arr: request.type === 'movie' ? 'Radarr' : 'Sonarr',
-                      })}
-                    </span>
-                  </ConfirmButton>
+                    <Button buttonType="ghost" className="w-full">
+                      <ServerIcon />
+                      <span>
+                        {intl.formatMessage(messages.openarr, {
+                          arr: request.type === 'movie' ? 'Radarr' : 'Sonarr',
+                        })}
+                      </span>
+                    </Button>
+                  </a>
                 )}
               </>
             )}
