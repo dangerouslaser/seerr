@@ -83,6 +83,9 @@ importers:
       email-templates:
         specifier: 13.0.1
         version: 13.0.1(@babel/core@7.29.0)(handlebars@4.7.8)(mustache@4.2.0)(pug@3.0.4)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(underscore@1.13.7)
+      email-validator:
+        specifier: 2.0.4
+        version: 2.0.4
       express:
         specifier: 5.2.1
         version: 5.2.1
@@ -116,6 +119,9 @@ importers:
       js-yaml:
         specifier: ^4.1.1
         version: 4.1.1
+      jwt-decode:
+        specifier: ^4.0.0
+        version: 4.0.0
       lodash:
         specifier: 4.18.1
         version: 4.18.1
@@ -3944,6 +3950,10 @@ packages:
     resolution: {integrity: sha512-kIH40FwhiE20Fh5DR1wrVM0HETYPoqfihUAgUwZtZgPK6VJNTCdJzTo7yxcgYmvMmKgqGJFSXE8/pEkeVmjuDg==}
     engines: {node: '>=18'}
 
+  email-validator@2.0.4:
+    resolution: {integrity: sha512-gYCwo7kh5S3IDyZPLZf6hSS0MnZT8QmJFqYvbqlDZSbwdZlY6QZWxJ4i/6UhITOJ4XzyI647Bm2MXKCLqnJ4nQ==}
+    engines: {node: '>4.0'}
+
   emittery@0.13.1:
     resolution: {integrity: sha512-DeWwawk6r5yR9jFgnDKYt4sLS0LmHJJi3ZOnb5/JdbYwj3nW+FxQnHIjhBKz8YLC7oRNPVM9NQ47I3CVx34eqQ==}
     engines: {node: '>=12'}
@@ -4561,6 +4571,7 @@ packages:
   git-raw-commits@5.0.1:
     resolution: {integrity: sha512-Y+csSm2GD/PCSh6Isd/WiMjNAydu0VBiG9J7EdQsNA5P9uXvLayqjmTsNlK5Gs9IhblFZqOU0yid5Il5JPoLiQ==}
     engines: {node: '>=18'}
+    deprecated: Deprecated and no longer maintained. Use @conventional-changelog/git-client instead.
     hasBin: true
 
   github-from-package@0.0.0:
@@ -5356,6 +5367,10 @@ packages:
 
   jws@4.0.1:
     resolution: {integrity: sha512-EKI/M/yqPncGUUh44xz0PxSidXFr/+r0pA70+gIYhjv+et7yxM+s29Y+VGDkovRofQem0fs7Uvf4+YmAdyRduA==}
+
+  jwt-decode@4.0.0:
+    resolution: {integrity: sha512-+KJGIyHgkGuIq3IEBNftfhW/LfWhXUIY6OmyVWjliu5KH1y0fw7VQ8YndE2O4qZdMSd9SqbnC8GOcZEy0Om7sA==}
+    engines: {node: '>=18'}
 
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
@@ -12051,6 +12066,8 @@ snapshots:
       - walrus
       - whiskers
 
+  email-validator@2.0.4: {}
+
   emittery@0.13.1:
     optional: true
 
@@ -13985,6 +14002,8 @@ snapshots:
     dependencies:
       jwa: 2.0.1
       safe-buffer: 5.2.1
+
+  jwt-decode@4.0.0: {}
 
   keyv@4.5.4:
     dependencies:
